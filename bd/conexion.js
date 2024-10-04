@@ -10,12 +10,13 @@ const proyecto = admin.firestore(); // Obtiene una instancia de Firestore, que e
 // Firestore permite almacenar, sincronizar y consultar datos en tiempo real.
 const usuarios = proyecto.collection("Ejemplo");
 const productos = proyecto.collection("Productos");
+const ventas = proyecto.collection("Ventas");
 //Se accede a la colección llamada Ejemplo en Firestore. Las colecciones en Firestore son grupos de documentos
 //Esta referencia permite realizar consultas, agregar, eliminar o modificar documentos dentro de la colección.
 
-//console.log(usuarios);
 
 module.exports ={
     usuarios,
-    productos
+    productos,
+    ventas
 }

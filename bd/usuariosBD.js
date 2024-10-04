@@ -38,7 +38,7 @@ async function buscarPorID(id){
     if(validarDatos(usuario1.gatUsuario)){
         usuarioValido=usuario1.gatUsuario;
     }
-    //console.log(usuarioValido);
+    //console.log(usuarioValido.nombre);
     return usuarioValido;
 }
 
