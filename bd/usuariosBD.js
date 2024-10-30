@@ -58,6 +58,17 @@ async function nuevoUsuario(data){
     
 }
 
+async function editarUsuario(id, nombre, usuario, password) {
+    const usuarios = await buscarPorID(id);
+    
+    if (usuarios) {
+        await usuariosBD.doc(id).update({ nombre: nombre, usuario:usuario, password:password });
+        return true;
+    }
+    return false;
+}
+
+
 async function borrarUsuario(id) {
     var usuarioValido = await buscarPorID(id);
     var usuarioBorrado = false;
@@ -72,7 +83,8 @@ module.exports ={
     mostrarUsuarios,
     nuevoUsuario,
     borrarUsuario,
-    buscarPorID
+    buscarPorID,
+    editarUsuario
 }
 
 // Revisar cuando si existe el usuario, pero el usuario es incorrecto

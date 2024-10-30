@@ -23,12 +23,37 @@ async function mostrarVenta(){
         const venta = doc.data();
         const venta1 = new Venta({ id: doc.id, ...venta });
 
-        // Promise.all para ejecutar las promesas de usuario y producto en paralelo
         const [usuarioValido, productoValido] = await Promise.all([
             usuarioBD.buscarPorID(venta1.getVenta.id_usuario),
             productoBD.buscarPorID(venta1.getVenta.id_producto)
         ]);
 
+        if (usuarioValido) {
+            var nombreUsu = usuarioValido.nombre;
+            venta1.nombreUsuario = nombreUsu;
+        } else {
+            console.error("Usuario no encontrado");
+        }
+        
+        if (productoValido) {
+            var nombreProd = productoValido.nombre;
+            venta1.nombreProducto = nombreProd;
+        } else {
+            console.error("Producto no encontrado");
+        }
+        
+        if(validarDatos(venta1.getVenta)){
+            ventasValidas.push({
+                ...venta1.getVenta,
+                nombreUsuario: venta1.nombreUsuario, 
+                nombreProducto: venta1.nombreProducto
+            });     
+        }
+    }); 
+    await Promise.all(promesasVentas);
+    
+    return ventasValidas;
+}
    /* const ventas = await ventaBD.get();
     console.log(ventas);
     
@@ -49,19 +74,7 @@ async function mostrarVenta(){
        /* const usuarioValido = usuarioBD.buscarPorID(venta1.getVenta.id_usuario);
         const productoValido = productoBD.buscarPorID(venta1.getVenta.id_producto);
 */
-        if (usuarioValido) {
-            var nombreUsu = usuarioValido.nombre;
-            venta1.nombreUsuario = nombreUsu;
-        } else {
-            console.error("Usuario no encontrado");
-        }
-        
-        if (productoValido) {
-            var nombreProd = productoValido.nombre;
-            venta1.nombreProducto = nombreProd;
-        } else {
-            console.error("Producto no encontrado");
-        }
+
         //console.log(productoValido);
         
         //var nombreUsu = usuarioValido.nombre; // Solo toma el nombre del usuario que recupero
@@ -74,19 +87,6 @@ async function mostrarVenta(){
         //console.log(nombreProd);
         
         
-        
-        if(validarDatos(venta1.getVenta)){
-            ventasValidas.push({
-                ...venta1.getVenta,
-                nombreUsuario: venta1.nombreUsuario, 
-                nombreProducto: venta1.nombreProducto
-            });     
-        }
-    }); 
-    await Promise.all(promesasVentas);
-    
-    return ventasValidas;
-}
 
 async function buscarPorID(id){
     const venta = await ventaBD.doc(id).get();

@@ -42,6 +42,16 @@ async function nuevoProducto(data){
     
 }
 
+async function editarProducto(id, nombre, precio, stock) {
+    const productos = await buscarPorID(id);
+    
+    if (productos) {
+        await productosBD.doc(id).update({ nombre: nombre, precio:precio, stock:stock });
+        return true;
+    }
+    return false;
+}
+
 async function borrarProducto(id) {
     var productoValido = await buscarPorID(id);
     var productoBorrado = false;
@@ -56,5 +66,6 @@ module.exports ={
     mostrarProductos,
     buscarPorID,
     nuevoProducto,
-    borrarProducto
+    borrarProducto,
+    editarProducto
 }

@@ -1,5 +1,5 @@
 var rutas = require("express").Router();
-var {mostrarUsuarios,nuevoUsuario,borrarUsuario,buscarPorID} = require("../bd/usuariosBD");
+var {mostrarUsuarios,nuevoUsuario,borrarUsuario,buscarPorID, editarUsuario} = require("../bd/usuariosBD");
 //var{Router} = require("express");
 
 rutas.get("/",async (req,res)=>{
@@ -23,5 +23,12 @@ rutas.post("/nuevoUsuario", async (req,res) => {
     var usuarioValido = await nuevoUsuario(req.body);
     res.json(usuarioValido);
 });
+
+rutas.patch("/editarUsuario/:id", async (req,res)=>{
+    const {nombre, usuario, password} = req.body;
+    const usuarioActualizado = await editarUsuario(req.params.id, nombre, usuario, password);
+    res.json(usuarioActualizado); 
+});
+
 
 module.exports = rutas;
